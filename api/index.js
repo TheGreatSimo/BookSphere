@@ -1,51 +1,57 @@
 import mongoose from "mongoose";
 import express from "express";
-import userRouter from "./routes/user.route.js";
-import authRouter from "./routes/auth.route.js";
-import cors from "cors"; // Import the cors middleware
+import cors from "cors";
+import dotenv from 'dotenv';
 
-mongoose.connect("mongodb://localhost/haja");
+// Load environment variables from .env
+dotenv.config();
 
+// Connect to MongoDB
+mongoose.connect(process.env.MONGODB_URI);
 const db = mongoose.connection;
+
+// Express app
 const app = express();
+
+// Middleware
+app.use(cors());
 app.use(express.json());
 
-app.use(cors());
-
-db.on("error", console.error.bind(console, "MongoDb connectio error:"));
-
+// MongoDB connection event handling
+db.on("error", console.error.bind(console, "MongoDB connection error:"));
 db.once("open", () => {
-  console.log("Connection to Mongoode");
+  console.log("Connected to MongoDB");
 });
 
-app.listen(3000, () => {
-  console.log("the back is running on http://localhost:3000");
-});
-
-
+// Routes
+import userRouter from "./routes/user.route.js";
+import authRouter from "./routes/auth.route.js";
 
 app.use("/api/user", userRouter);
-
 app.use("/api/auth", authRouter);
 
+// Default route
 app.get("/", (req, res) => {
   res.json({
     message: "API is working",
   });
 });
 
-
+// Error handling middleware
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || "Internal server error";
 
-  // Use next(err) instead of return res.status(statusCode).json({...})
-  next(err);
-  
-  // Optionally, you can still send a JSON response to the client
+  // Send a JSON response to the client
   res.status(statusCode).json({
     success: false,
     error: message,
     statusCode,
   });
+});
+
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
