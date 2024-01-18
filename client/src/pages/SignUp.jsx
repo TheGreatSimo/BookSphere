@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link , useNavigate  } from "react-router-dom";
+
 
 export default function SignUp() {
 
 
-  const [formData, setFormData] = useState({username: "",email: "",password: "",});
+  const [formData, setFormData] = useState({"username": "","email": "","password": "",});
   const [error, setError] = useState(null);
   const [load, setLoad] = useState(false);
+  const navigate = useNavigate();
 
 
   const handleChange = (e) => {
@@ -27,12 +29,13 @@ export default function SignUp() {
         body: JSON.stringify(formData),
       });
       const  data = await response.json()
-      console.log(`Here is the data ${data}`)
+
       if (data.success == false){
         setError(true)
         setLoad(false);
         return
       } else if (data.success == true){
+        navigate('/')
         setError(false)
         return
       }
@@ -53,8 +56,9 @@ export default function SignUp() {
 
   return (
     <div className="flex h-screen">
-      <div className="flex-1 flex flex-col items-center justify-center">
-        <form className="flex flex-col gap-8 p-6 w-2/3 ">
+      <div className="flex-1 flex flex-col items-center ">
+        <h1 className="text-center text-gray-900  text-2xl  mt-32">Sign Up</h1>
+        <form className="flex flex-col gap-8 p-6 w-2/3 mt-20 ">
           <input
             className="text-center placeholder:text-center focus:text-center rounded-lg bg-slate-300 h-8"
             placeholder="username"

@@ -25,6 +25,7 @@ export const signup = async (req, res, next) => {
     await newUser.save();
     console.log("done like a king ");
     res.status(201).json({
+      success: true,
       message: `Yeah you've done like a king`,
     });
   } catch (error) {
