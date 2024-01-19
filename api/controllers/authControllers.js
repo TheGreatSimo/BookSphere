@@ -48,12 +48,12 @@ export const signin = async (req, res, next) => {
       return next(errorHandler(401, "Invalid password"));
     }
 
-    const expiresIn = '1d';
 
-    const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET, { expiresIn });
+    const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
     const {password: hashPassword , ...rest} = validUser._doc
+    const expiryDate = new Date(Date.now() + 36000000)
 
-    res.cookie('usertoken', token, { httpOnly : true }).status(200).json(rest)
+    res.cookie('usertoken', token, { httpOnly : true , expires: expiryDate, secure: true  }).status(200).json(rest)
     // Both user and password are valid
     console.log("correct user and password");
 
