@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { Link , useNavigate  } from "react-router-dom";
+import {signInStart, signInSuccess, signInFailure} from '../redux/user/userSlice';
+import { useDispatch, useSelector } from 'react-redux'
 
 
 
 export default function SignIn() {
   const [formData, setFormData] = useState({"email": "","password": "",});
-  const [error, setError] = useState(null);
-  const [load, setLoad] = useState(false);
+  const {load , error } = useSelector((state) => state.user)
+
+  const dispatch =  useDispatch();
   const navigate = useNavigate();
 
 
@@ -19,6 +22,12 @@ export default function SignIn() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      try{
+        dispatch(signInStart())
+      } catch(error) {
+        alert(`error 2 ${error}`)
+      }
+      
       const response = await fetch("http://localhost:3000/api/auth/signin", {
       method: "POST",
       headers: {
@@ -28,13 +37,18 @@ export default function SignIn() {
       });
 
       const  data = await response.json()
-      console.log(`Here is the data ${data}`)
-      navigate('/')
+      console.log(data)
+
+      if (data._id) {
+        dispatch(signInSuccess(data))
+        navigate('/')
+      } else {
+        dispatch(signInFailure(data.error))
+      }
 
     } catch (error) {
-      setError(error.message);
+      dispatch(signInFailure(error))
       console.log(`Here is the error brother ${error.message}`);
-      setLoad(false);
     }
   };
 
@@ -62,7 +76,10 @@ export default function SignIn() {
         </form>
 
 
-        <h1 className="bg-red-100 text-center">{error && "Password or email is wrong "}</h1>
+        {/* <h1 className="bg-red-100 text-center">{error && "Password or email is wrong "}</h1> */}
+        <h1 className="bg-red-100 text-center">
+          {error ? error || 'Something went wrong!' : ''}
+        </h1>
 
         <button
           type="button"
@@ -83,7 +100,7 @@ export default function SignIn() {
       <div className="flex-1 opacity-95">
         <img
           className="rounded"
-          src="https://miro.medium.com/v2/resize:fit:1024/1*H-gi2ZWC1MynBUiFVM6RZQ.jpeg"
+          src="https://images.unsplash.com/photo-1651509585702-2905b72197de?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8cGFsb3xlbnwwfDF8MHx8fDA%3D&w=1000&q=80"
           alt="app"
           height={"100%"}
           width={"100%"}

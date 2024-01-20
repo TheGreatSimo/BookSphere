@@ -105,7 +105,7 @@ export default function SignUp() {
       <div className="flex-1 opacity-95">
         <img
           className="rounded"
-          src="https://wallpaperaccess.com/full/7002101.jpg"
+          src="https://images.pexels.com/photos/1907785/pexels-photo-1907785.jpeg?cs=srgb&dl=pexels-ricky-esquivel-1907785.jpg&fm=jpg"
           alt="app"
           height={"100%"}
           width={"100%"}
