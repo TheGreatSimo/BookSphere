@@ -10,12 +10,12 @@ export default function NavBar() {
         </Link>
 
         <ul className='flex gap-10 cursor-pointer '>
-          <Link to="/about">
-            <li>about</li>
+          <Link to="/feed">
+            <li>Feed</li>
           </Link>
 
           <Link to="/profile">
-            <li>profile</li>
+            <li>Profile</li>
           </Link>
 
           <Link to="/sign-in">

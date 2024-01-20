@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function About() {
+export default function Feed() {
   return (
     <div>
-      <h1>About</h1>
+      <h1>Feed</h1>
     </div>
   )
 }
