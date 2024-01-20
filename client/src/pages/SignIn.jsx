@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link , useNavigate  } from "react-router-dom";
 import {signInStart, signInSuccess, signInFailure} from '../redux/user/userSlice';
 import { useDispatch, useSelector } from 'react-redux'
+import GAuth from "../component/GAuth";
 
 
 
@@ -84,8 +85,9 @@ export default function SignIn() {
         <button
           type="button"
           onClick={handleSubmit}
-          className="text-white bg-gradient-to-br from-red-800 to-blue-800 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-16 py-2 text-center me-2 mb-20 mt-10"
+          className="text-white bg-gradient-to-br from-red-800 to-blue-800 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-16 py-2 text-center me-2 mb-5 mt-10"
         >
+
           {load ? "Loading..." : "Sign In"}
         </button>
 
@@ -95,6 +97,8 @@ export default function SignIn() {
             <span className="text-blue-900">Sign Up</span>
           </Link>
         </div>
+
+        <GAuth />
       </div>
 
       <div className="flex-1 opacity-95">

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Link , useNavigate  } from "react-router-dom";
+import GAuth from "../component/GAuth";
+
+
 
 
 export default function SignUp() {
-
 
   const [formData, setFormData] = useState({"username": "","email": "","password": "",});
   const [error, setError] = useState(null);
@@ -89,10 +91,11 @@ export default function SignUp() {
         <button
           type="button"
           onClick={handleSubmit}
-          className="text-white bg-gradient-to-br from-red-800 to-blue-800 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-16 py-2 text-center me-2 mb-20 mt-10"
+          className="text-white bg-gradient-to-br from-red-800 to-blue-800 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-16 py-2 text-center me-2 mb-5  mt-10"
         >
           {load ? "Loading..." : "Sign Up"}
         </button>
+
 
         <div className="flex justify-center gap-5">
           <p>You have an account ?</p>
@@ -100,6 +103,8 @@ export default function SignUp() {
             <span className="text-blue-900">Sign In</span>
           </Link>
         </div>
+
+        <GAuth />
       </div>
 
       <div className="flex-1 opacity-95">
