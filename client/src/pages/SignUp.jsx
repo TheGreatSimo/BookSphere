@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link , useNavigate  } from "react-router-dom";
+import {signInStart, signInSuccess, signInFailure} from '../redux/user/userSlice';
 import GAuth from "../component/GAuth";
+import { useDispatch, useSelector } from 'react-redux'
 
 
 
@@ -8,8 +10,9 @@ import GAuth from "../component/GAuth";
 export default function SignUp() {
 
   const [formData, setFormData] = useState({"username": "","email": "","password": "",});
-  const [error, setError] = useState(null);
-  const [load, setLoad] = useState(false);
+
+  const {load , error } = useSelector((state) => state.user)
+  const dispatch =  useDispatch();
   const navigate = useNavigate();
 
 
@@ -21,8 +24,8 @@ export default function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setLoad(true);
       // Fetch returns a promise, so use async/await to wait for the response
+      dispatch(signInStart())
       const response = await fetch("http://localhost:3000/api/auth/signup", {
         method: "POST",
         headers: {
@@ -30,29 +33,22 @@ export default function SignUp() {
         },
         body: JSON.stringify(formData),
       });
-      const  data = await response.json()
+      const data = await response.json()
+      alert('done')
+      console.log(data)
 
-      if (data.success == false){
-        setError(true)
-        setLoad(false);
-        return
-      } else if (data.success == true){
+      if (data._id){
+        dispatch(signInSuccess(data))
         navigate('/')
-        setError(false)
-        return
+      } else{
+        dispatch(signInFailure(data.error))
       }
-      setFormData({
-        username: "",
-        email: "",
-        password: "",
-      });
 
-      setLoad(false);
 
     } catch (error) {
-      setError(error.message);
-      console.log(`Here is the error brother ${error.message}`);
-      setLoad(false);
+      alert("the catch running ")
+      alert(error)
+      dispatch(signInFailure(error))
     }
   };
 

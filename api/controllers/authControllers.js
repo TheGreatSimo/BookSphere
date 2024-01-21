@@ -12,24 +12,31 @@ try {
 
 
 export const signup = async (req, res, next) => {
-  const { username, email, password } = req.body;
-  const hashPassword = bcryptjs.hashSync(password, 10);
-
-  const newUser = new User({
-    username,
-    email,
-    password: hashPassword,
-  });
 
   try {
-    await newUser.save();
-    console.log("done like a king ");
-    res.status(201).json({
-      success: true,
-      message: `Yeah you've done like a king`,
+    const { username, email, password } = req.body;
+    const hashPassword = bcryptjs.hashSync(password, 10);
+
+    const newUser = new User({
+      username,
+      email,
+      password: hashPassword,
     });
-  } catch (error) {
-    next(error);
+    await newUser.save();
+    console.log("he is saved")
+
+    try {
+        const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+        const {password: hashPassword , ...rest} = newUser._doc
+        const expiryDate = new Date(Date.now() + 36000000)
+        res.cookie('usertoken', token, { httpOnly : true , expires: expiryDate, secure: true  }).status(200).json(rest)
+        console.log("done like a king")
+    } catch (error) {
+        next(error);
+
+  }} catch (error) {
+    next(error)
+    
   }
 };
 
