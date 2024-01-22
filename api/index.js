@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import express from "express";
 import cors from "cors";
 import dotenv from 'dotenv';
+import cookieParser from "cookie-parser";
 
 // Load environment variables from .env
 dotenv.config();
@@ -16,6 +17,8 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+app.use(cookieParser())
 
 // MongoDB connection event handling
 db.on("error", console.error.bind(console, "MongoDB connection error:"));

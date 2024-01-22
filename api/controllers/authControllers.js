@@ -29,8 +29,7 @@ export const signup = async (req, res, next) => {
         const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
         const {password: hashPassword , ...rest} = newUser._doc
         const expiryDate = new Date(Date.now() + 36000000)
-        res.cookie('usertoken', token, { httpOnly : true , expires: expiryDate, secure: true  }).status(200).json(rest)
-        console.log("done like a king")
+        res.cookie('access_token', token, { httpOnly : true , expires: expiryDate, secure: true  }).status(200).json(rest)
     } catch (error) {
         next(error);
 
@@ -60,7 +59,7 @@ export const signin = async (req, res, next) => {
     const {password: hashPassword , ...rest} = validUser._doc
     const expiryDate = new Date(Date.now() + 36000000)
 
-    res.cookie('usertoken', token, { httpOnly : true , expires: expiryDate, secure: true  }).status(200).json(rest)
+    res.cookie('access_token', token, { httpOnly : true , expires: expiryDate, secure: true  }).status(200).json(rest)
     // Both user and password are valid
     console.log("correct user and password");
 
