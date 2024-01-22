@@ -14,8 +14,6 @@ export default function Profile() {
   var [imagePercent, setImagePercent] =  useState(0)
   const [imageError , setImageError]  = useState(false)
   const [formData , setFormData] = useState({})
-  console.log(imagePercent)
-  console.log(formData)
 
   //styles
   const style = "bg-blue-100  rounded-lg placeholder-center text-center w-96 h-10 text-lg border-gray-500 border-2 focus:text-black text-gray-600"
@@ -69,12 +67,26 @@ export default function Profile() {
       <h1 className=' text-4xl py-10 w-64 drop-shadow-lg text-gray-900'>Profile</h1>
       <input type="file" accept="image/*" ref={imageRef} hidden  onChange={(e) => { setImage(e.target.files[0])}}/>
       <img src={(imagePercent == 100) ? formData.profilePicture : currentUser.profilePicture} alt="profile" className='w-40 h-40 mx-atuo rounded-full' onClick={() => imageRef.current.click()} />
+      {/*
       <p>
         {imageError ? 
           (<span className='text-red-800 text-center'>There's an error ( image should be less than 2MB )</span>) 
+          : (0 < imagePercent < 100) ? <span className='text-center text-gray-900'>Uploading  {imagePercent} %</span> 
           : (imagePercent == 100)  ? 
           (<span className='text-green-800 text-center'>Image uploaded succefully</span>): null}
       </p>
+      */}
+
+      <p>
+        {imageError ? 
+          (<span className='text-red-800 text-center'>There's an error (image should be less than 2MB)</span>) 
+          : (imagePercent > 0 && imagePercent < 100) ? 
+          (<span className='text-blue-800 text-center'>Uploading: {imagePercent}%</span>)
+          : (imagePercent === 100)  ? 
+          (<span className='text-green-800 text-center'>Image uploaded successfully</span>)
+          : null}
+      </p>
+
 
       <form className='display flex flex-col items-center gap-5 mt-20 mx-auto'>
 
